@@ -18,9 +18,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // Acts as cmd for any unbound keys.
     [_NAV] = LAYOUT_iso_73(
         _______, _______, _______,  _______, _______, _______, _______, _______, _______, _______,  _______,  _______,  _______, _______, _______, _______,
-        _______, _______, _______,  _______, _______, _______, _______, _______, _______, _______,  _______,  _______,  _______,          _______, _______,
-        _______, _______, _______,  _______, _______, _______, KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT, _______,  _______,  _______, _______, _______, _______,
-        _______, _______, _______,  _______, _______, _______, _______, _______, _______, _______,  _______,  _______,  _______,          _______, _______,
+        _______, _______, _______,  WORD_R,  _______, _______, _______, KC_PGUP, LINE_R,  LINE_L,   _______,  _______,  _______,          _______, _______,
+        _______, _______, _______,  KC_PGDN, _______, _______, KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT, _______,  _______,  _______, _______, _______, _______,
+        _______, _______, _______,  CUT,     COPY,    PASTE,   WORD_L,  _______, _______, _______,  _______,  _______,  _______,          _______, _______,
         _______, _______, _______,                             _______,                             _______,  _______,  _______, _______, _______, _______, _______),
 
 };
@@ -36,18 +36,11 @@ static uint16_t last_key_code;
 // Ezt nem írhatja felül a közben lenyomott másik billentyű.
 static uint16_t nav_scln_time;
 
-static bool nav_scln_tap_pending;
+// static bool nav_scln_tap_pending;
 
 // melyik oprendszert használom
 //static bool mac_mode;
 
-// track the state of NAV_SCLN
-// 0 - not activated
-// 1 - pressed (waiting to decide on semicolon or nav)
-// 2 - consumed (upgraded to semicolon or used in nav layer)
-// 3 - consumed (as ctrl-tab rotation)
-// 4 - consumed (as cmd)
-static int semicolon_nav_activated;
 
 // keep track of the current kvm target (to play a different sound on switch).
 static int kvm_target;
@@ -73,7 +66,6 @@ static bool vim_insert;
 
 
 
-#include "_unregister_nav_scln_down_state.c"
 #include "_process_nav_scln.c"
 #include "_process_ctrl_esc.c"
 
