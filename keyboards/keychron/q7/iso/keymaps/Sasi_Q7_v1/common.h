@@ -17,8 +17,8 @@ enum custom_keycodes {
     CLOSE_W,
 };
 
-#define WORD_L LALT(KC_LEFT)
-#define WORD_R LALT(KC_RIGHT)
+//#define WORD_L LALT(KC_LEFT)
+//#define WORD_R LALT(KC_RIGHT)
 
 #define LINE_L LGUI(KC_LBRC)
 #define LINE_R LGUI(KC_RBRC)

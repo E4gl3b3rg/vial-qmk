@@ -4,6 +4,7 @@
 
 #include QMK_KEYBOARD_H
 #include "common.h"
+#include "print.h"
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_BASE] = LAYOUT_iso_73(
@@ -17,11 +18,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // Accessed by holding semicolon.
     // Acts as cmd for any unbound keys.
     [_NAV] = LAYOUT_iso_73(
-        _______, _______, _______,  _______, _______, _______, _______, _______, _______, _______,  _______,  _______,  _______, _______, _______, _______,
-        _______, _______, _______,  WORD_R,  _______, _______, _______, KC_PGUP, LINE_R,  LINE_L,   _______,  _______,  _______,          _______, _______,
-        _______, _______, _______,  KC_PGDN, _______, _______, KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT, _______,  _______,  _______, _______, _______, _______,
-        _______, _______, _______,  CUT,     COPY,    PASTE,   WORD_L,  _______, _______, _______,  _______,  _______,  _______,          _______, _______,
-        _______, _______, _______,                             _______,                             _______,  _______,  _______, _______, _______, _______, _______),
+        _______, _______, _______,  _______, _______, _______, _______, _______, _______, _______,  _______,  _______,  _______, _______,          _______, OS_TOGGLE,
+        _______, _______, _______,  WORD_R,  _______, _______, _______, KC_PGUP, LINE_R,  LINE_L,   _______,  _______,  _______,                   _______, _______,
+        _______, _______, _______,  KC_PGDN, _______, _______, KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT, _______,  _______,  _______, _______,          _______, _______,
+        _______, _______, _______,  CUT,     COPY,    PASTE,   WORD_L,  _______, _______, _______,  _______,  _______,  _______,                   _______, _______,
+        _______, _______, _______,                             _______,                             _______,  _______,  _______, _______, _______, _______, QK_BOOT),
 
 };
 
@@ -39,7 +40,14 @@ static uint16_t nav_scln_time;
 // static bool nav_scln_tap_pending;
 
 // melyik oprendszert használom
-//static bool mac_mode;
+static bool os_feedback_active = false;
+static bool mac_mode;
+static uint32_t os_feedback_start = 0;
+static uint8_t saved_rgb_mode;
+static uint8_t saved_rgb_h;
+static uint8_t saved_rgb_s;
+static uint8_t saved_rgb_v;
+static uint8_t saved_rgb_speed;
 
 
 // keep track of the current kvm target (to play a different sound on switch).
@@ -63,43 +71,26 @@ static int vim_movement;
 
 static bool vim_insert;
 
-
-
-
 #include "_process_nav_scln.c"
 #include "_process_ctrl_esc.c"
-
-
+#include "_matrix_scan_user.c"
+#include "_process_os_toggle.c"
 
 // Ez induláskor:
 // kiolvassa a QMK user EEPROM-területét,
 // megnézi az első bitet,
 // ennek megfelelően beállítja a mac_mode változót.
-//void keyboard_post_init_user(void) {
-//    uint32_t user_config = eeconfig_read_user();
-//
-//    mac_mode = (user_config & OS_MODE_MAC) != 0;
-//}
+void keyboard_post_init_user(void) {
+    debug_enable=true;
+    debug_matrix=false;
 
+    uint32_t user_config = eeconfig_read_user();
 
-// Mac / PC mód kezelése.
-// Az OS_TOGGLE billentyű megnyomásakor átváltunk a Mac és a PC mód között.
-// A kiválasztott módot az EEPROM-ba is elmentjük, így a billentyűzet
-// újraindítása vagy áramtalanítása után is megmarad a beállítás.
-//bool process_os_toggle(uint16_t keycode, keyrecord_t *record) {
-//    switch (keycode) {
-//        case OS_TOGGLE:
-//            if (record->event.pressed) {
-//                mac_mode = !mac_mode;
-//
-//                eeconfig_update_user(mac_mode ? OS_MODE_MAC : 0);
-//            }
-//            return false;
-//    }
-//
-//    return true;
-//}
+    mac_mode = (user_config & OS_MODE_MAC) != 0;
+}
 
+#define WORD_L (mac_mode ? LALT(KC_LEFT) : LCTL(KC_LEFT))
+#define WORD_R (mac_mode ? LALT(KC_RIGHT) : LCTL(KC_RIGHT))
 
 
 bool process_all_custom(uint16_t keycode, keyrecord_t *record) {
@@ -110,6 +101,10 @@ bool process_all_custom(uint16_t keycode, keyrecord_t *record) {
     // in game mode, all excess processing is skipped (mainly to avoid unwanted macro / helper triggers).
     if (!(IS_GAME))
     {
+
+        // // Mac / PC mód váltás kezelése.
+        if (!process_os_toggle(keycode, record)) return false;
+
         //        if (!process_specials(keycode, record)) return false;
 
         // delay shift down presses until next key.
@@ -136,9 +131,6 @@ bool process_all_custom(uint16_t keycode, keyrecord_t *record) {
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     bool retval = process_all_custom(keycode, record);
-
-    // // Mac / PC mód váltás kezelése.
-    // if (!process_os_toggle(keycode, record)) return false;
 
     if (record->event.pressed)
     {
