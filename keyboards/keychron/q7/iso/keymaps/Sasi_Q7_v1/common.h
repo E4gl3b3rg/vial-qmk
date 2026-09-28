@@ -17,15 +17,18 @@ enum custom_keycodes {
     CLOSE_W,
 };
 
-//#define WORD_L LALT(KC_LEFT)
-//#define WORD_R LALT(KC_RIGHT)
+#define WORD_L LGUI(KC_LEFT)
+#define WORD_R LGUI(KC_RIGHT)
 
 #define LINE_L LGUI(KC_LBRC)
 #define LINE_R LGUI(KC_RBRC)
 
-#define CUT   LGUI(KC_X)
+#define CUT   LALT(KC_C)
 #define COPY  LGUI(KC_C)
-#define PASTE LGUI(KC_V)
+#define PASTE LALT(KC_C)
+// #define CUT   LGUI(KC_X)
+// #define COPY  LGUI(KC_C)
+// #define PASTE LGUI(KC_V)
 
 // ezek még nincsennek megvalósítva
 //enum planck_keycodes {

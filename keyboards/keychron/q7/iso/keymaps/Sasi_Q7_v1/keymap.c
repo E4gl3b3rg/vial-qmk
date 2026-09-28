@@ -89,10 +89,6 @@ void keyboard_post_init_user(void) {
     mac_mode = (user_config & OS_MODE_MAC) != 0;
 }
 
-#define WORD_L (mac_mode ? LALT(KC_LEFT) : LCTL(KC_LEFT))
-#define WORD_R (mac_mode ? LALT(KC_RIGHT) : LCTL(KC_RIGHT))
-
-
 bool process_all_custom(uint16_t keycode, keyrecord_t *record) {
     //    if (!process_symbol_specials(keycode, record)) return false;
 
