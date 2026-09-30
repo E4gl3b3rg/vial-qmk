@@ -290,6 +290,7 @@ bool process_nav_scln(uint16_t keycode, keyrecord_t *record) {
         case TAB_L:
         case TAB_R:
         case CLOSE_W:
+        case KC_GRV:
 
 
             /*

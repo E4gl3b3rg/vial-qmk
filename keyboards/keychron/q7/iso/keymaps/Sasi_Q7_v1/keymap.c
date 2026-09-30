@@ -18,7 +18,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // Accessed by holding semicolon.
     // Acts as cmd for any unbound keys.
     [_NAV] = LAYOUT_iso_73(
-        _______, _______, _______,  _______, _______, _______, _______, _______, _______, _______,  _______,  _______,  _______, _______,          _______, OS_TOGGLE,
+        KC_GRV,  _______, _______,  _______, _______, _______, _______, _______, _______, _______,  _______,  _______,  _______, _______,          _______, OS_TOGGLE,
         _______, _______, _______,  WORD_R,  _______, _______, _______, KC_PGUP, LINE_R,  LINE_L,   _______,  _______,  _______,                   _______, _______,
         _______, _______, _______,  KC_PGDN, _______, _______, KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT, _______,  _______,  _______, _______,          _______, _______,
         _______, _______, _______,  CUT,     COPY,    PASTE,   WORD_L,  _______, _______, _______,  _______,  _______,  _______,                   _______, _______,
@@ -73,7 +73,7 @@ static bool vim_insert;
 
 #include "_process_nav_scln.c"
 #include "_process_ctrl_esc.c"
-#include "_matrix_scan_user.c"
+#include "_rgb_matrix_indicators_user.c"
 #include "_process_os_toggle.c"
 
 // Ez induláskor:
