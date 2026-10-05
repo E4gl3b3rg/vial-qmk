@@ -102,7 +102,7 @@ bool process_all_custom(uint16_t keycode, keyrecord_t *record) {
         // // Mac / PC mód váltás kezelése.
         if (!process_os_toggle(keycode, record)) return false;
 
-        // if (!process_word_keys(keycode, record)) return false;
+        if (!process_word_keys(keycode, record)) return false;
 
 
         //        if (!process_specials(keycode, record)) return false;

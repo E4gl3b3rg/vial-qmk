@@ -5,7 +5,7 @@ enum q7_layers{
 };
 
 enum custom_keycodes {
-    OS_TOGGLE,
+    OS_TOGGLE = SAFE_RANGE,
     CTRL_ESC,
     NAV_SCLN,
     WORD_L,
@@ -15,6 +15,9 @@ enum custom_keycodes {
     TAB_L,
     TAB_R,
     CLOSE_W,
+    CUT,
+    COPY,
+    PASTE
 };
 
 // #define WORD_L LCTL(KC_LEFT)
@@ -26,9 +29,8 @@ enum custom_keycodes {
 #define LINE_L LGUI(KC_LBRC)
 #define LINE_R LGUI(KC_RBRC)
 
-#define CUT   LALT(KC_C)
-#define COPY  LGUI(KC_C)
-#define PASTE LALT(KC_C)
+// #define COPY  LGUI(KC_C)
+// #define PASTE LALT(KC_C)
 // #define CUT   LGUI(KC_X)
 // #define COPY  LGUI(KC_C)
 // #define PASTE LGUI(KC_V)
